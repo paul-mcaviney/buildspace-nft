@@ -1,15 +1,5 @@
-# Basic Sample Hardhat Project
+# Buildspace's NFT Project
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+Started this project on October 9th, 2021
 
-Try running some of the following tasks:
-
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
+Hoping to learn how to mint NFTs through code and understand what is going on under the hood when it is done at places like OpenSea
