@@ -7,7 +7,7 @@ const main = async () => {
     // mint 1st nft
     let txn = await nftContract.makeNFT();
     await txn.wait();
-    console.log("Minted NFT #1");
+    console.log("Minted NFT #0");
 };
 
 const runMain = async () => {
