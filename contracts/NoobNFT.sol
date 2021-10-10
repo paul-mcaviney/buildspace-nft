@@ -7,6 +7,9 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "hardhat/console.sol";
 
+// import helper functions from the Base64.sol contract
+import { Base64 } from "./libraries/Base64.sol";
+
 
 // Inherit the imported contract to have access to its methods
 contract NoobNFT is ERC721URIStorage {
@@ -67,18 +70,42 @@ contract NoobNFT is ERC721URIStorage {
         string memory first = pickRandomFirstWord(newItemId);
         string memory second = pickRandomSecondWord(newItemId);
         string memory third = pickRandomThirdWord(newItemId);
+        string memory combinedWord = string(abi.encodePacked(first, second, third));
 
         // concatenate it all together and close the <text and <svg> tags
-        string memory finalSvg = string(abi.encodePacked(baseSvg, first, second, third, "</text></svg>"));
-        console.log("\n------------------\n");
-        console.log(finalSvg);
-        console.log("\n------------------");
+        string memory finalSvg = string(abi.encodePacked(baseSvg, combinedWord, "</text></svg>"));
+        
+        // Get all the JSON metadata in place and base64 encode it
+        string memory json = Base64.encode(
+            bytes(
+                string(
+                    abi.encodePacked(
+                        '{"name": "',
+                        // set the title of our NFT as the generated word.
+                        combinedWord,
+                        '", "description": "A highly acclaimed collection of squares.", "image": "data:image/svg+xml;base64,',
+                        // add data:image/svg+xml;base64 and then append and base64 encode our svg.
+                        Base64.encode(bytes(finalSvg)),
+                        '"}'
+                    )
+                )
+            )
+        );
+
+        // prepend data:application/json;base64 to data
+        string memory finalTokenUri = string(
+            abi.encodePacked("data:application/json;base64,", json)
+        );
+
+        console.log("\n---------------------\n");
+        console.log(finalTokenUri);
+        console.log("\n---------------------\n");
 
         // Actually mint the NFT to the sender using msg.sender
         _safeMint(msg.sender, newItemId);
 
         //Set the NFTs data
-        _setTokenURI(newItemId, "set tokenURI later");
+        _setTokenURI(newItemId, finalTokenUri);
 
         _tokenIds.increment();
 
