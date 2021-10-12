@@ -26,6 +26,9 @@ contract NoobNFT is ERC721URIStorage {
     string[] thirdWords = ["Aardvark", "Elephant", "Tiger", "Kitty", "Puppy", "HUMAN", "Mouse", "Robot", "Hedghog", "Whale", "Koala", "Kangaroo", "Tardigrade", "Mushroom", "Rabbit", "Centipede", "Toucan", "Parrot", "Dolphin", "Programmer"];
 
 
+    event NewNFTMinted(address sender, uint256 tokenId);
+
+
     // Pass the name of our NFT token and its symbol
     constructor() ERC721 ("NoobNFT", "NOOB"){
         console.log("This is slightly better NFT contract... WIP");
@@ -110,5 +113,7 @@ contract NoobNFT is ERC721URIStorage {
         _tokenIds.increment();
 
         console.log("An NFT w/ ID %s has been minted to %s", newItemId, msg.sender);
+
+        emit NewNFTMinted(msg.sender, newItemId);
     }
 }
